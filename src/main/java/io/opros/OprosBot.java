@@ -1,5 +1,6 @@
 package io.opros;
 
+
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -23,13 +24,23 @@ public class OprosBot extends TelegramLongPollingBot {
     private static Map<String, UserData> users = new HashMap<>();
     private static Set<Poll> polls = new HashSet<Poll>();
 
+
     static {
         users.put("northcapen", new UserData(NOT_REGISTERED));
+        users.put("melsrose", new UserData(NOT_REGISTERED));
+        users.put("gex194", new UserData(NOT_REGISTERED));
 
-        Question question = new Question(1L, "Пепси или кола?", asList("Пепси", "Кола"));
-        Question question2 = new Question(2L, "Кальян или вейп?", asList("Кальян", "Вейп"));
-        Question question3 = new Question(3L, "Вейвс или Эфир?", asList("Вейвс", "Эфир"));
-        polls.add(new Poll(1L, "Наш первый опрос", asList(question, question2, question3)));
+        Question question = new Question(1L, "Побуждает ли вас к отъезду обстановка в стране?\nДа/Нет", asList("Да", "Нет"));
+        Question question2 = new Question(2L, "Представьте: в выборах участвуют Путин и Навальный. За кого будете голосовать?", asList("Путин", "Навальный"));
+        Question question3 = new Question(3L, "Власть в России страшная или смешная?", asList("Страшная", "Смешная"));
+        Question question4 = new Question(4L, "Если была бы возможность изменить прошлое, Вы бы попробовали?\nДа/Нет", asList("Да", "Нет"));
+        Question question5 = new Question(5L, "Если будет война, вы пойдете защищать виноградники Медведева?\n Да/Нет" , asList("Да", "Нет"));
+        Question question6 = new Question(6L, "Хотели бы вы жить в Северной Корее?\nДа/Нет", asList("Да", "Нет"));
+        Question question7 = new Question(7L, "Как вы относитесь к людям с нетрадиционной ориентацией?\n Хорошо/Плохо/Нейтрально" , asList("Хорошо","Плохо", "Нейтрально"));
+        Question question8 = new Question(8L, "Тюрьмы в России людей исправляют или калечат?", asList("Исправляют", "Калечат"));
+        Question question9 = new Question(9L, "Любите ли вы пушистых котиков?:)\nДа/Нет?", asList("Да", "Нет"));
+        polls.add(new Poll(1L, "Опрос", asList(question, question2, question3, question4, question5,question6,question7,question8, question9)));
+
     }
 
     public void onUpdateReceived(Update update) {
@@ -72,7 +83,7 @@ public class OprosBot extends TelegramLongPollingBot {
                     Question question = poll.getQuestion(userData.questionId);
                     if(userData.questionId  == poll.questions.size()) {
                         userData.state = State.WAITING_QUIZ;
-                        result = "Спасибо за опрос. Мы вам заплатим. Скоро.";
+                        result = "Спасибо за опрос. Ваши деньги очень скоро придут на Ваш счет!";
                     }
                     else if (question.answer.contains(message_text)) {
                         userData.questionId = userData.questionId + 1;
@@ -123,7 +134,7 @@ class UserData {
 class Poll {
     Long id;
     String name;
-    List<Question> questions = new ArrayList<Question>();
+    List<Question> questions = new ArrayList<>();
 
     public Poll(Long id, String name, List<Question> questions) {
         this.id = id;
